@@ -49,6 +49,8 @@ void translate(mat4 matrix, double x, double y, double z);
 
 void scale(mat4 matrix, double x, double y, double z);
 
+void xrotmat(mat4 matrix, double a);
+void yrotmat(mat4 matrix, double a);
 void zrotmat(mat4 matrix, double a);
 
 void rotate(mat4 matrix, vec3 axis, double angle);

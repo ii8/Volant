@@ -184,6 +184,26 @@ void inverse(mat4 m)
 
 }
 
+void xrotmat(mat4 matrix, double a)
+{
+	mat4 tmp = {{1, 0, 0, 0},
+				{0, cos(a), -sin(a), 0},
+				{0, sin(a), cos(a), 0},
+				{0, 0, 0, 1}};
+	mlt4_mm(matrix, tmp);
+	//memcpy(matrix, tmp, sizeof(tmp));
+}
+
+void yrotmat(mat4 matrix, double a)
+{
+	mat4 tmp = {{cos(a), 0, sin(a), 0},
+				{0, 1, 0, 0},
+				{-sin(a), 0, cos(a), 0},
+				{0, 0, 0, 1}};
+
+	mlt4_mm(matrix, tmp);
+	//memcpy(matrix, tmp, sizeof(tmp));
+}
 
 void zrotmat(mat4 matrix, double a)
 {
@@ -191,8 +211,8 @@ void zrotmat(mat4 matrix, double a)
 				{sin(a), cos(a), 0, 0},
 				{0, 0, 1, 0},
 				{0, 0, 0, 1}};
-
-	memcpy(matrix, tmp, sizeof(tmp));
+	mlt4_mm(matrix, tmp);
+	//memcpy(matrix, tmp, sizeof(tmp));
 }
 
 void rotate(mat4 matrix, vec3 axis, double angle)

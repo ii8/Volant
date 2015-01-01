@@ -43,6 +43,6 @@ struct mesh* forge_mesh(const char*);
 
 void wreck_mesh(struct mesh*);
 
-void draw_mesh(struct mesh*, GLuint, GLuint);
+void draw_mesh(struct mesh*, GLuint, GLuint, mat4);
 
 #endif

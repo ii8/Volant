@@ -6,6 +6,8 @@
 #include <stdarg.h>
 #include <stdio.h>
 
+#include "vmath.h"
+
 #define LOG_FILE "log"
 
 int _vlog_glerr(char*, int);
@@ -17,6 +19,8 @@ void vlog_start();
 void vlog(const char*, ...);
 
 void vlog_err(const char*, ...);
+
+void vlog_mat(mat4);
 
 void glfw_error_callback (int, const char*);
 

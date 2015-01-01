@@ -145,38 +145,30 @@ void wreck_mesh(struct mesh* mesh)
 	free(mesh);
 }
 
-void draw_mesh(struct mesh* mesh, GLuint program, GLuint MatrixID)
+void draw_mesh(struct mesh* mesh, GLuint program, GLuint index, mat4 view)
 {
 	glUseProgram(program);
 
 	mat4 MVP = IDMAT4;
 	mat4 model = IDMAT4;
 	mat4 proj = IDMAT4;
-	mat4 rot = IDMAT4;
-	mat4 trans = IDMAT4;
-
 	perspective(proj, 45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
-
-	vec3 axis = {0,1,0};
-
+	//vec3 axis = {0,1,0};
 	static float angle = 0; angle += 0.02;
 
 
+	//rotate(rot, axis, angle);
+	//yrotmat(model, angle);
+	//translate(model, 0.0, 2.0, -6.0);
 
-	translate(trans, 0.2, 0.5, -6.0);
 
-	//vec3 axis = {0,1,0};
-	rotate(rot, axis, angle);
-	//zrotmat(rot, angle);
+	//vlog_mat(view);
 
-	//mlt4_mm(model, rot, trans);
-	//mlt4_mm(model, trans, rot);
-
-	mlt4_mm(MVP, trans);
-	mlt4_mm(MVP, rot);
+	mlt4_mm(MVP, model);
+	mlt4_mm(MVP, view);
 	mlt4_mm(MVP, proj);
 
-	glUniformMatrix4fv(MatrixID, 1, GL_FALSE, (GLfloat*)&MVP[0][0]);
+	glUniformMatrix4fv(index, 1, GL_FALSE, (GLfloat*)&MVP[0][0]);
 
 
 	glBindVertexArray(mesh->vao_index);

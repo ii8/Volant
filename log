@@ -1,4 +1,4 @@
-Jan  1 2015 - 00:53:18
+Jan  1 2015 - 21:37:25
 
 starting GLFW: 3.0.4 X11 GLX glXGetProcAddress clock_gettime /dev/js shared
 Renderer: Gallium 0.4 on AMD BARTS
@@ -21,4 +21,4 @@ forge_mesh: vbo=1, vao=1
 Compiling shader: transform.vs
 Compiling shader: color.fs
 Linking program
-glError in file main.c @ line 109: 500
+glError in file main.c @ line 105: 500
