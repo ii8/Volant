@@ -1,11 +1,3 @@
-//for style inspiration:
-//DMC
-//mouse controls weaponry!!! what a plan!
-//combine key with mouse to do "swift attacks"
-//need anime? Top 10 Best Survival Anime EVER [HD]
-//use this_for_engine_functions andThisForGame
-// _leave_this_alone
-//subterfuge
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
