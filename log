@@ -1,0 +1,24 @@
+Jan  1 2015 - 00:53:18
+
+starting GLFW: 3.0.4 X11 GLX glXGetProcAddress clock_gettime /dev/js shared
+Renderer: Gallium 0.4 on AMD BARTS
+OpenGL version supported 3.3 (Core Profile) Mesa 10.3.5
+GL Context Params:
+GL_MAX_COMBINED_TEXTURE_IMAGE_UNITS 48
+GL_MAX_CUBE_MAP_TEXTURE_SIZE 16384
+GL_MAX_DRAW_BUFFERS 8
+GL_MAX_FRAGMENT_UNIFORM_COMPONENTS 16384
+GL_MAX_TEXTURE_IMAGE_UNITS 16
+GL_MAX_TEXTURE_SIZE 16384
+GL_MAX_VARYING_FLOATS 128
+GL_MAX_VERTEX_ATTRIBS 16
+GL_MAX_VERTEX_TEXTURE_IMAGE_UNITS 16
+GL_MAX_VERTEX_UNIFORM_COMPONENTS 16384
+GL_MAX_VIEWPORT_DIMS 16384 16384
+GL_STEREO 0
+-----------------------------
+forge_mesh: vbo=1, vao=1
+Compiling shader: transform.vs
+Compiling shader: color.fs
+Linking program
+glError in file main.c @ line 109: 500
