@@ -14,27 +14,27 @@ static void _fpc_key_callback(GLFWwindow* window, int key, int scancode, int act
 	{
 		case GLFW_KEY_W:
 			if(action == GLFW_PRESS)
-				cam->zvel = 0.4;
+				cam->vel[2] = 0.4;
 			else if(action == GLFW_RELEASE)
-				cam->zvel = 0.0;
+				cam->vel[2] = 0.0;
 			break;
 		case GLFW_KEY_A:
 			if(action == GLFW_PRESS)
-				cam->xvel = 0.4;
+				cam->vel[0] = 0.4;
 			else if(action == GLFW_RELEASE)
-				cam->xvel = 0.0;
+				cam->vel[0] = 0.0;
 			break;
 		case GLFW_KEY_S:
 			if(action == GLFW_PRESS)
-				cam->zvel = -0.4;
+				cam->vel[2] = -0.4;
 			else if(action == GLFW_RELEASE)
-				cam->zvel = 0.0;
+				cam->vel[2] = 0.0;
 			break;
 		case GLFW_KEY_D:
 			if(action == GLFW_PRESS)
-				cam->xvel = -0.4;
+				cam->vel[0] = -0.4;
 			else if(action == GLFW_RELEASE)
-				cam->xvel = 0.0;
+				cam->vel[0] = 0.0;
 			break;
 		case GLFW_KEY_ESCAPE:
 			glfwSetWindowShouldClose(window, GL_TRUE);
@@ -53,35 +53,31 @@ static void _fpc_apply(GLFWwindow* window)
 	ywin /= 2;
 
 
-	cam->hangle -= ((double)xpos-xwin)/100;
-	cam->vangle -= ((double)ypos-ywin)/100;
+	cam->hangle -= ((double)xpos-xwin)/1000;
+	cam->vangle -= ((double)ypos-ywin)/1000;
 
 	//if(cam->hangle > 2*PI)
 	//	cam->hangle -= 2*PI;
 	//if(cam->vangle > 2*PI)
 	//	cam->vangle -= 2*PI;
+	//is there way to do this more efficiently?
+	identity(cam->view);
+	yrotmat(cam->view, cam->hangle);
 
-	cam->xpos += cam->xvel;
-	cam->ypos += cam->yvel;
-	cam->zpos += cam->zvel;
+	vec4 vel4 = {cam->vel[0], cam->vel[1], cam->vel[2], 0};
+	mlt4_mv(vel4, cam->view);
+	add(cam->pos, vel4);
 
 	identity(cam->view);
 
-	translate(cam->view, cam->xpos, cam->ypos, cam->zpos);
+	translate(cam->view, cam->pos[0], cam->pos[1], cam->pos[2]);
 	yrotmat(cam->view, cam->hangle);
 	xrotmat(cam->view, cam->vangle);
-
-	//vlog("%f :: %i\n", xpos, xwin);
 
 	//horizontalAngle += mouseSpeed * deltaTime * float(1024/2 - xpos );
 	//verticalAngle   += mouseSpeed * deltaTime * float( 768/2 - ypos );
 
-	//yrotmat(cam->view, xwin-(double)xpos);
-	//xrotmat(cam->view, ywin-(double)ypos);
-	//translate(cam->view, cam->xvel, cam->yvel, cam->zvel);
-
 	glfwSetCursorPos(window, xwin, ywin);
-
 }
 /*
 static void _fpc_pos_callback(GLFWwindow* window, double x, double y)

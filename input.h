@@ -11,13 +11,8 @@
 struct camera
 {
 	mat4 view;
-	double xvel;
-	double yvel;
-	double zvel;
-
-	double xpos;
-	double ypos;
-	double zpos;
+	vec3 vel;
+	vec3 pos;
 
 	double vangle;
 	double hangle;
