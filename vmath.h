@@ -4,6 +4,7 @@
 #include <string.h>
 #include <math.h>
 
+typedef float vec2[2];
 typedef float vec3[3];
 typedef float vec4[4];
 typedef vec3 mat3[3];
@@ -49,9 +50,9 @@ void translate(mat4 matrix, double x, double y, double z);
 
 void scale(mat4 matrix, double x, double y, double z);
 
-void xrotmat(mat4 matrix, double a);
-void yrotmat(mat4 matrix, double a);
-void zrotmat(mat4 matrix, double a);
+void rotatex(mat4 matrix, double a);
+void rotatey(mat4 matrix, double a);
+void rotatez(mat4 matrix, double a);
 
 void rotate(mat4 matrix, vec3 axis, double angle);
 

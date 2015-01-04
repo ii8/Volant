@@ -4,9 +4,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "shade.h"
 #include "mesh.h"
-#include "input.h"
+#include "camera.h"
 #include "log.h"
 
 
@@ -42,7 +41,7 @@ int main(int argc, char** argv)
 
 	if(!glfwInit())
 	{
-		vlog_err ("ERROR: could not start GLFW3\n");
+		vlog_err("ERROR: could not start GLFW3\n");
 		return 1;
 	}
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -68,43 +67,30 @@ int main(int argc, char** argv)
 	glfwMakeContextCurrent(window);
 	vlog_params();
 	struct camera* cam = first_person_camera(window);
-	//mat4 proj = IDMAT4;
-	//perspective(proj, 45.0f, 4.0f / 3.0f, 0.1f, 100.0f);
 
 	glewExperimental = GL_TRUE;
 	glewInit();
 
 	glClearColor(0.598, 0.863, 0.945, 0);
-	//glEnable(GL_DEPTH_TEST);
-	//glDepthFunc(GL_LESS);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 
-	struct mesh* mycoolmesh = forge_mesh("davepls");
-	GLuint shaderProgramID = load_program( "transform.vs", "color.fs" );
-
-	GLuint mvp_id = glGetUniformLocation(shaderProgramID, "MVP");
-	//GLuint view_index = glGetUniformLocation(shaderProgramID, "view");
-	//GLuint proj_index = glGetUniformLocation(shaderProgramID, "proj");
+	struct mesh* mycoolmesh = forge_mesh("rd_mesh.obj", "aku.dds", "transform.vs", "color.fs");
 
 	while(!glfwWindowShouldClose(window))
 	{
 		_update_fps_counter (window);
-		glClear(GL_COLOR_BUFFER_BIT);
-
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		cam->apply(window);
-
-		//glUniformMatrix4fv(view_index, 1, GL_FALSE, (GLfloat*)&cam->view[0][0]);
-		//glUniformMatrix4fv(proj_index, 1, GL_FALSE, (GLfloat*)&proj[0][0]);
-		draw_mesh(mycoolmesh, shaderProgramID, mvp_id, cam->view);
+		draw_mesh(mycoolmesh, cam->view);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
 	}
 
 	vlog_glerr();
 	wreck_mesh(mycoolmesh);
-	glDeleteProgram(shaderProgramID);
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

@@ -88,10 +88,10 @@ void normal(vec3 normal, vec3 v, vec3 u, vec3 w)
 	cross(normal, u, w);
 }
 
-void identity(mat4 result)//prob never use this
+void identity(mat4 m)
 {
 	mat4 tmp = IDMAT4;
-	memcpy(result, tmp, sizeof(tmp));
+	memcpy(m, tmp, sizeof(tmp));
 }
 
 void translate(mat4 matrix, double x, double y, double z)
@@ -103,30 +103,14 @@ void translate(mat4 matrix, double x, double y, double z)
 	//memcpy(matrix, tmp, sizeof(tmp));
 }
 
-void scale(mat4 matrix, double x, double y, double z)
+void scale(mat4 m, double x, double y, double z)
 {
 	mat4 tmp = IDMAT4;
 	tmp[0][0] = x;
 	tmp[1][1] = y;
 	tmp[2][2] = z;
-	memcpy(matrix, tmp, sizeof(tmp));
+	mlt4_mm(m, tmp);
 }
-/*
-void inverse(mat4 matrix)
-{
-	Result[3] = tvec4<T, P>(0, 0, 0, 1);
-	Result = transpose(Result);
-	mat4 Translation = Result * tvec4<T, P>(-tvec3<T, P>(m[3]), m[3][3]);
-	Result[3] = Translation;
-
-	mat4 result;
-	result = matrix;
-	result[3][0] = 0;
-	result[3][1] = 0;
-	result[3][2] = 0;
-	result[3][3] = 1;
-}
-*/
 
 void inverse(mat4 m)
 {
@@ -184,35 +168,31 @@ void inverse(mat4 m)
 
 }
 
-void xrotmat(mat4 matrix, double a)
+void rotatex(mat4 matrix, double a)
 {
 	mat4 tmp = {{1, 0, 0, 0},
 				{0, cos(a), -sin(a), 0},
 				{0, sin(a), cos(a), 0},
 				{0, 0, 0, 1}};
 	mlt4_mm(matrix, tmp);
-	//memcpy(matrix, tmp, sizeof(tmp));
 }
 
-void yrotmat(mat4 matrix, double a)
+void rotatey(mat4 matrix, double a)
 {
 	mat4 tmp = {{cos(a), 0, sin(a), 0},
 				{0, 1, 0, 0},
 				{-sin(a), 0, cos(a), 0},
 				{0, 0, 0, 1}};
-
 	mlt4_mm(matrix, tmp);
-	//memcpy(matrix, tmp, sizeof(tmp));
 }
 
-void zrotmat(mat4 matrix, double a)
+void rotatez(mat4 matrix, double a)
 {
 	mat4 tmp = {{cos(a), -sin(a), 0, 0},
 				{sin(a), cos(a), 0, 0},
 				{0, 0, 1, 0},
 				{0, 0, 0, 1}};
 	mlt4_mm(matrix, tmp);
-	//memcpy(matrix, tmp, sizeof(tmp));
 }
 
 void rotate(mat4 matrix, vec3 axis, double angle)
@@ -239,7 +219,7 @@ void rotate(mat4 matrix, vec3 axis, double angle)
 
 
 	inverse(inv);
-	zrotmat(rot, angle);
+	rotatez(rot, angle);
 
 
 
@@ -256,9 +236,6 @@ void rotate(mat4 matrix, vec3 axis, double angle)
 
 void perspective(mat4 matrix, float fov_angle, float aspect, float znear, float zfar)
 {
-	//assert(abs(aspect - std::numeric_limits<T>::epsilon()) > static_cast<T>(0));
-	//assert(zFar > zNear);
-
 	float tan_half_fov = tan(fov_angle / 2.0f);
 
 	matrix[0][0] = 1 / (aspect * tan_half_fov);

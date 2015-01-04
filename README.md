@@ -3,7 +3,7 @@
 The engine is still in development and not currently usable.<br>
 To build use:
 ```
-gcc -Wall -o volant main.c -lm -lGL -lGLEW -lglfw shade.c vmath.c mesh.c log.c input.c
+gcc -Wall -o volant main.c -lm -lGL -lGLEW -lglfw shade.c vmath.c mesh.c log.c camera.c
 ```
 Should work on any linux with opengl3+, you will probably need to install GLFW3<br>
 The makefile is not yet in use.<br>

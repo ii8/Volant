@@ -6,43 +6,36 @@
 #include <stdlib.h>
 #include "log.h"
 #include "vmath.h"
-/*
-typedef struct _vec3
-{
-	float x;
-	float y;
-	float z;
-}vec3;
+#include "shade.h"
 
-typedef struct _vec4
-{
-	float x;
-	float y;
-	float z;
-	float w;
-}vec4;
-
-typedef struct _mat4
-{
-	vec4 a;//|ax bx cx dx|
-	vec4 b;//|ay by cy dy|
-	vec4 c;//|az bz cz dz|
-	vec4 d;//|aw bw cw dw|
-}mat4;
-*/
 struct mesh
 {
 	unsigned int id;
-	GLuint vao_index;
-	GLuint vbo_index;
+	GLuint shader_index;
+	GLuint mvp_handle;//model view projection matrix
+	GLuint tex_handle;//sampler2D
+	GLuint tex_index;
+	GLuint vao_index;//vertex array object
+	GLuint vbo_index;//vertex buffer object
 	GLfloat* vbo_data;
 	unsigned int vbo_size;
+	GLuint uvb_index;//uv buffer
+	GLfloat* uvb_data;
+	unsigned int uvb_size;
 };
 
-struct mesh* forge_mesh(const char*);
+struct wfobj
+{
+	vec3* vert;
+	vec3* norm;
+	vec2* uv;
+	unsigned int size;
+};
+
+struct mesh* forge_mesh(const char* obj_path, const char* tex_path, const char* vs_path, const char* fs_path);
 
 void wreck_mesh(struct mesh*);
 
-void draw_mesh(struct mesh*, GLuint, GLuint, mat4);
+void draw_mesh(struct mesh*, mat4);
 
 #endif

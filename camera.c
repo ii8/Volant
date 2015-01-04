@@ -1,5 +1,5 @@
 
-#include "input.h"
+#include "camera.h"
 
 static void _reset_callback(GLFWwindow* window)
 {
@@ -62,7 +62,7 @@ static void _fpc_apply(GLFWwindow* window)
 	//	cam->vangle -= 2*PI;
 	//is there way to do this more efficiently?
 	identity(cam->view);
-	yrotmat(cam->view, cam->hangle);
+	rotatey(cam->view, cam->hangle);
 
 	vec4 vel4 = {cam->vel[0], cam->vel[1], cam->vel[2], 0};
 	mlt4_mv(vel4, cam->view);
@@ -71,8 +71,8 @@ static void _fpc_apply(GLFWwindow* window)
 	identity(cam->view);
 
 	translate(cam->view, cam->pos[0], cam->pos[1], cam->pos[2]);
-	yrotmat(cam->view, cam->hangle);
-	xrotmat(cam->view, cam->vangle);
+	rotatey(cam->view, cam->hangle);
+	rotatex(cam->view, cam->vangle);
 
 	//horizontalAngle += mouseSpeed * deltaTime * float(1024/2 - xpos );
 	//verticalAngle   += mouseSpeed * deltaTime * float( 768/2 - ypos );
@@ -86,8 +86,8 @@ static void _fpc_pos_callback(GLFWwindow* window, double x, double y)
 	//mat4 matrix_y;
 
 	struct camera* cam = glfwGetWindowUserPointer(window);
-	xrotmat(matrix_x, x-cam->centerx);
-	//yrotmat(matrix_y, y);
+	rotatex(matrix_x, x-cam->centerx);
+	//rotatey(matrix_y, y);
 
 	mlt4_mm(cam->view, matrix_x);
 }
@@ -103,6 +103,7 @@ struct camera* first_person_camera(GLFWwindow* window)
 	*/
 
 	struct camera* cam = malloc(sizeof(struct camera));
+	memset(cam, 0, sizeof(struct camera));
 	identity(cam->view);
 	cam->apply = &_fpc_apply;
 
@@ -114,13 +115,3 @@ struct camera* first_person_camera(GLFWwindow* window)
 
 	return cam;
 }
-
-
-
-/*
-static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-{
-	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
-}
-* */

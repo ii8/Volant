@@ -44,12 +44,9 @@ static GLuint load_shader(const char* path, int type)
 		return 0;
 	}
 
-	// Compile Shader
-	vlog("Compiling shader: %s\n", path);
 	glShaderSource(shaderID, 1, (const GLchar* const*)&shaderData , NULL);//WTF
 	glCompileShader(shaderID);
 
-	// Check Shader
 	int params = -1;
 	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &params);
 	if(GL_TRUE != params)
@@ -72,14 +69,11 @@ GLuint load_program(const char * vs_path, const char * fs_path)
 	GLuint vertexShaderID = load_shader(vs_path, GL_VERTEX_SHADER);
 	GLuint fragmentShaderID = load_shader(fs_path, GL_FRAGMENT_SHADER);
 
-	// Link the program
-	vlog("Linking program\n");
 	GLuint programID = glCreateProgram();
 	glAttachShader(programID, vertexShaderID);
 	glAttachShader(programID, fragmentShaderID);
 	glLinkProgram(programID);
 
-	// Check the program
 	int params = -1;
 	glGetProgramiv(programID, GL_LINK_STATUS, &params);
 	if(GL_TRUE != params)
