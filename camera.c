@@ -4,6 +4,7 @@
 static void _reset_callback(GLFWwindow* window)
 {
 	glfwSetCursorPosCallback(window, NULL);
+	glfwSetKeyCallback(window, NULL);
 }
 
 static void _fpc_key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
@@ -79,19 +80,11 @@ static void _fpc_apply(GLFWwindow* window)
 
 	glfwSetCursorPos(window, xwin, ywin);
 }
-/*
-static void _fpc_pos_callback(GLFWwindow* window, double x, double y)
+
+static void _get_proj(mat4 proj, struct camera* cam)
 {
-	mat4 matrix_x = IDMAT4;
-	//mat4 matrix_y;
 
-	struct camera* cam = glfwGetWindowUserPointer(window);
-	rotatex(matrix_x, x-cam->centerx);
-	//rotatey(matrix_y, y);
-
-	mlt4_mm(cam->view, matrix_x);
 }
-*/
 
 struct camera* first_person_camera(GLFWwindow* window)
 {

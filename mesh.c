@@ -186,7 +186,8 @@ static GLuint load_texture(const char* path)
 	glGenTextures(1, &tex_index);
 	glBindTexture(GL_TEXTURE_2D, tex_index);
 
-	unsigned int block_size = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
+	//unsigned int block_size = (format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT) ? 8 : 16;
+	unsigned int block_size = 16;
 	unsigned int offset = 0;
 	unsigned int level;
 
@@ -233,26 +234,34 @@ struct mesh* forge_mesh(const char* obj_path, const char* tex_path, const char* 
 
 	mesh->shader_index = load_program(vs_path, fs_path);
 	mesh->mvp_handle = glGetUniformLocation(mesh->shader_index, "MVP");
+	mesh->model_handle = glGetUniformLocation(mesh->shader_index, "model");
+	mesh->view_handle = glGetUniformLocation(mesh->shader_index, "view");
 
 	mesh->tex_index = load_texture(tex_path);
 	mesh->tex_handle = glGetUniformLocation(mesh->shader_index, "sampler");
 
+	glGenVertexArrays(1, &mesh->vao_index);
+	glBindVertexArray(mesh->vao_index);
+
 	glGenBuffers(1, &mesh->vbo_index);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo_index);
 	glBufferData(GL_ARRAY_BUFFER, mesh->vbo_size, mesh->vbo_data, GL_STATIC_DRAW);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
 	glGenBuffers(1, &mesh->uvb_index);
 	glBindBuffer(GL_ARRAY_BUFFER, mesh->uvb_index);
 	glBufferData(GL_ARRAY_BUFFER, mesh->uvb_size, mesh->uvb_data, GL_STATIC_DRAW);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, NULL);
 
-	glGenVertexArrays(1, &mesh->vao_index);
-	glBindVertexArray(mesh->vao_index);
+	glGenBuffers(1, &mesh->nbo_index);
+	glBindBuffer(GL_ARRAY_BUFFER, mesh->nbo_index);
+	glBufferData(GL_ARRAY_BUFFER, mesh->nbo_size, mesh->nbo_data, GL_STATIC_DRAW);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 0, NULL);
 
-	/*
 	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo_index);
-	glVertexAttribPointer (0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-	*/
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+
 	return mesh;
 }
 
@@ -261,14 +270,16 @@ void wreck_mesh(struct mesh* mesh)
 	glDeleteVertexArrays(1, &mesh->vao_index);
 	glDeleteBuffers(1, &mesh->vbo_index);
 	glDeleteBuffers(1, &mesh->uvb_index);
+	glDeleteBuffers(1, &mesh->nbo_index);
 	glDeleteProgram(mesh->shader_index);
 	glDeleteTextures(1, &mesh->tex_index);
 	free(mesh->vbo_data);
 	free(mesh->uvb_data);
+	free(mesh->nbo_data);
 	free(mesh);
 }
 
-void draw_mesh(struct mesh* mesh, mat4 view)
+void draw_mesh(struct mesh* mesh, mat4 view)//, mat4 proj)
 {
 	glUseProgram(mesh->shader_index);
 
@@ -280,35 +291,33 @@ void draw_mesh(struct mesh* mesh, mat4 view)
 
 	static float angle = 0; angle += 0.02;
 	//rotate(rot, axis, angle);
-	rotatey(model, angle);
-	translate(model, 0.0, 2.0, -6.0);
+	//rotatey(model, angle);
+	if(mesh->id == 1)
+		translate(model, 10.0, 0.0, 0.0);
+	else
+		translate(model, 0.0, 2.0, -8.0);
 
 	mlt4_mm(MVP, model);
 	mlt4_mm(MVP, view);
 	mlt4_mm(MVP, proj);
 
 	glUniformMatrix4fv(mesh->mvp_handle, 1, GL_FALSE, (GLfloat*)&MVP[0][0]);
+	glUniformMatrix4fv(mesh->model_handle, 1, GL_FALSE, (GLfloat*)&model[0][0]);
+	glUniformMatrix4fv(mesh->view_handle, 1, GL_FALSE, (GLfloat*)&view[0][0]);
 
-	glActiveTexture(GL_TEXTURE0);//+mesh->id
+	glActiveTexture(GL_TEXTURE0+mesh->id);//works without +id
 	glBindTexture(GL_TEXTURE_2D, mesh->tex_index);
-	glUniform1i(mesh->tex_handle, 0);//mesh->id
-
-	glEnableVertexAttribArray(0);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->vbo_index);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
-
-	glEnableVertexAttribArray(1);
-	glBindBuffer(GL_ARRAY_BUFFER, mesh->uvb_index);
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+	glUniform1i(mesh->tex_handle, mesh->id);//same??
 
 
-	//glBindVertexArray(mesh->vao_index);
-	glDrawArrays(GL_TRIANGLES, 0, 72);
+	GLuint light = glGetUniformLocation(mesh->shader_index, "light");
+	vec3 lightPos = {4.0,4.0,4.0};
+	glUniform3f(light, lightPos[0], lightPos[1], lightPos[2]);
+
+	glBindVertexArray(mesh->vao_index);
+	glDrawArrays(GL_TRIANGLES, 0, mesh->vbo_size);
 
 	//int i;
 	//for(i = 0; i < 72; i += 3)
 	//	glDrawArrays(GL_LINE_LOOP, i, 3);
-
-	glDisableVertexAttribArray(0);
-	glDisableVertexAttribArray(1);
 }

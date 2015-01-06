@@ -16,7 +16,11 @@ struct camera
 
 	double vangle;
 	double hangle;
+	float fov;
+
 	void (*apply)(GLFWwindow*);
+	void (*get_view)(GLFWwindow*);
+	void (*get_proj)(GLFWwindow*);
 };
 
 

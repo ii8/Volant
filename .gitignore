@@ -1,6 +1,7 @@
 log
 main
 crunch
+local/
 *.crn
 *.png
 *.gch

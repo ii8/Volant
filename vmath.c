@@ -80,12 +80,13 @@ void cross(vec3 result, vec3 v, vec3 u)
 	result[2] = v[0] * u[1] - v[1] * u[0];
 }
 
-
+//TODO: Dont modify v,u and w
 void normal(vec3 normal, vec3 v, vec3 u, vec3 w)
 {
 	sub(u, v);
 	sub(w, v);
 	cross(normal, u, w);
+	normalize(normal);
 }
 
 void identity(mat4 m)

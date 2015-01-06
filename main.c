@@ -13,7 +13,7 @@ void _update_fps_counter (GLFWwindow* window)
 {
 	static double previous_seconds = 0;
 	static int frame_count;
-	double current_seconds = glfwGetTime ();
+	double current_seconds = glfwGetTime();
 	double elapsed_seconds = current_seconds - previous_seconds;
 	if (elapsed_seconds > 0.25)
 	{
@@ -49,7 +49,7 @@ int main(int argc, char** argv)
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-	glfwWindowHint(GLFW_SAMPLES, 4);//anti alias
+	glfwWindowHint(GLFW_SAMPLES, 8);//anti alias
 
 	//GLFWmonitor* monitor = glfwGetPrimaryMonitor();
 	//const GLFWvidmode* vidmode = glfwGetVideoMode(monitor);
@@ -60,7 +60,7 @@ int main(int argc, char** argv)
 	if(!window)
 	{
 		glfwTerminate();
-		vlog_err("Failed to create window");
+		vlog_err("Failed to create window\n");
 		exit(EXIT_FAILURE);
 	}
 
@@ -75,22 +75,28 @@ int main(int argc, char** argv)
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 
-	struct mesh* mycoolmesh = forge_mesh("rd_mesh.obj", "aku.dds", "transform.vs", "color.fs");
+	struct mesh* akumesh = forge_mesh("data/aku.obj", "data/aku.dds", "data/aku.vs", "data/aku.fs");
+	struct mesh* skullmesh = forge_mesh("data/skull.obj", "data/skull.dds", "data/aku.vs", "data/aku.fs");
 
+	//mat4 view;
+	//mat4 proj;
 	while(!glfwWindowShouldClose(window))
 	{
 		_update_fps_counter (window);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		cam->apply(window);
-		draw_mesh(mycoolmesh, cam->view);
+		//proj = cam->get_proj(window);
+		draw_mesh(akumesh, cam->view);
+		draw_mesh(skullmesh, cam->view);
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
 	vlog_glerr();
-	wreck_mesh(mycoolmesh);
+	wreck_mesh(akumesh);
+	wreck_mesh(skullmesh);
 
 	glfwDestroyWindow(window);
 	glfwTerminate();

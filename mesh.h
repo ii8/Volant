@@ -13,6 +13,8 @@ struct mesh
 	unsigned int id;
 	GLuint shader_index;
 	GLuint mvp_handle;//model view projection matrix
+	GLuint view_handle;
+	GLuint model_handle;
 	GLuint tex_handle;//sampler2D
 	GLuint tex_index;
 	GLuint vao_index;//vertex array object
@@ -22,13 +24,16 @@ struct mesh
 	GLuint uvb_index;//uv buffer
 	GLfloat* uvb_data;
 	unsigned int uvb_size;
+	GLuint nbo_index;//normal buffer
+	GLfloat* nbo_data;
+	unsigned int nbo_size;
 };
 
 struct wfobj
 {
 	vec3* vert;
-	vec3* norm;
 	vec2* uv;
+	vec3* norm;
 	unsigned int size;
 };
 
