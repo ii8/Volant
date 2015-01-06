@@ -291,7 +291,7 @@ void draw_mesh(struct mesh* mesh, mat4 view)//, mat4 proj)
 
 	static float angle = 0; angle += 0.02;
 	//rotate(rot, axis, angle);
-	//rotatey(model, angle);
+	rotatey(model, angle);
 	if(mesh->id == 1)
 		translate(model, 10.0, 0.0, 0.0);
 	else
