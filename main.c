@@ -8,7 +8,6 @@
 #include "camera.h"
 #include "log.h"
 
-
 void _update_fps_counter (GLFWwindow* window)
 {
 	static double previous_seconds = 0;

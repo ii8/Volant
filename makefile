@@ -30,7 +30,7 @@ vmath.o: vmath.c
 
 
 build:
-	gcc -Wall -o volant main.c shade.c vmath.c mesh.c log.c camera.c -lm -lGL -lGLEW -lglfw
+	zenity --warning && gcc -Wall -o volant main.c shade.c vmath.c mesh.c log.c camera.c -lm -lGL -lGLEW -lglfw
 
 clean:
 	rm -rf *.o *.gch
