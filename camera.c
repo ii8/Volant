@@ -1,5 +1,12 @@
+#include <stdlib.h>
+#include <string.h>
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 #include "camera.h"
+#include "log.h"
+
 
 static void _reset_callback(GLFWwindow* window)
 {

@@ -1,14 +1,7 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include <GL/glew.h>
-
-#include <stdarg.h>
-#include <stdio.h>
-
 #include "vmath.h"
-
-#define LOG_FILE "log"
 
 int _vlog_glerr(char*, int);
 

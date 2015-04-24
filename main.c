@@ -8,7 +8,7 @@
 #include "camera.h"
 #include "log.h"
 
-void _update_fps_counter (GLFWwindow* window)
+void _update_fps_counter(GLFWwindow* window)
 {
 	static double previous_seconds = 0;
 	static int frame_count;
@@ -25,6 +25,13 @@ void _update_fps_counter (GLFWwindow* window)
 	}
 	frame_count++;
 }
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+	glViewport(0, 0, width, height);
+
+}
+
 
 //vexit(status)
 //wreck all meshaes and objects
@@ -55,6 +62,7 @@ int main(int argc, char** argv)
 	//if fullscreen
 		//GLFWwindow* window = glfwCreateWindow(vidmode->width, vidmode->height, "Volant Engine", monitor, NULL);
 	GLFWwindow* window = glfwCreateWindow(1024, 768, "Volant Engine", NULL, NULL);
+	glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
 	if(!window)
 	{

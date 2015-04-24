@@ -2,11 +2,8 @@
 #define MESH_H
 
 #include <GL/glew.h>
-#include <string.h>
-#include <stdlib.h>
-#include "log.h"
+
 #include "vmath.h"
-#include "shade.h"
 
 struct mesh
 {

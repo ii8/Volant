@@ -1,12 +1,4 @@
-
-//WTF is this?
-#include "log.h"
-#include <GLFW/glfw3.h>
-#include <stdlib.h>
-
-
 #include "vmath.h"
-
 
 struct camera
 {

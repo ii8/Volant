@@ -1,4 +1,4 @@
-log
+*.log
 main
 volant
 crunch
@@ -8,3 +8,6 @@ local/
 *.gch
 *.blend*
 *.o
+log
+tags
+shittyutils.c

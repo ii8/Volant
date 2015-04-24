@@ -1,9 +1,6 @@
 #ifndef VMATH_H
 #define VMATH_H
 
-#include <string.h>
-#include <math.h>
-
 typedef float vec2[2];
 typedef float vec3[3];
 typedef float vec4[4];

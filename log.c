@@ -1,4 +1,12 @@
+#include <GL/glew.h>
+
+#include <stdarg.h>
+#include <stdio.h>
+
 #include "log.h"
+
+
+#define LOG_FILE "volant.log"
 
 int _vlog_glerr(char *file, int line)
 {

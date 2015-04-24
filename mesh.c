@@ -1,4 +1,10 @@
+#include <string.h>
+#include <stdlib.h>
+#include <stdio.h>
+
 #include "mesh.h"
+#include "log.h"
+#include "shade.h"
 
 static struct wfobj* load_wavefront(const char * path)
 {
